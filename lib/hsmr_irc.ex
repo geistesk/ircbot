@@ -3,7 +3,7 @@ defmodule OhaiIrc do
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
-  def start(_type, _args) do    
+  def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     {:ok, client} = ExIrc.start_client!
@@ -11,8 +11,7 @@ defmodule OhaiIrc do
     children = [
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
-      worker(LoginHandler, [client, ["#johncena"]]),
-      worker(OhaiHandler, [client])
+      worker(LoginHandler, [client, ["#johncena"]])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

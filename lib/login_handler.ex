@@ -21,6 +21,11 @@ defmodule LoginHandler do
     {:noreply, state}
   end
 
+  def handle_info({:joined, channel}, client) do
+      debug "Joined #{channel}"
+    {:noreply, client}
+  end
+
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     {:noreply, state}
