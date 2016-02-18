@@ -27,6 +27,7 @@ defmodule ConnectionHandler do
 
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
+    # IO.inspect msg
     {:noreply, state}
   end
 
