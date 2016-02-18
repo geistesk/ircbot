@@ -1,4 +1,4 @@
-defmodule OhaiIrc do
+defmodule HsmrIrc do
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
