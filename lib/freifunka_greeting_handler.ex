@@ -12,21 +12,27 @@ defmodule FreifunkaGreetingHandler do
   end
 
   def handle_info({:joined, channel, user}, client) do
-    debug "#{user} joined #{channel}"
+    # Asking who the new user is…
+    # Response will be consumed in the next function
 
-    # case ExIrc.Client.cmd(client, "who phi") do
-    #   :ok ->
-    #     debug "okay for me ._."
-    #   {:error, atm} ->
-    #     IO.inspect atm
-    # end
-    # TODO: get userinfo "somehow"
+    ExIrc.Client.cmd(client, "who #{user}")
+    {:noreply, client}
+  end
+
+  def handle_info({:unrecognized, "352", %IrcMessage{:cmd => "352", :args => resp}}, client) do
+    # 352 is the magic number for an /who-Response which data
+    # The {fifth,third} element in the resulting string is the {nick,host}name
+
+    {nick, host} = { Enum.at(resp, 5, ""), Enum.at(resp, 3, "") }
+    debug "#{nick} @ #{host}"
+    # TODO
 
     {:noreply, client}
   end
 
   # Catch-all for messages you don't care about
   def handle_info(_msg, client) do
+    # IO.inspect msg
     {:noreply, client}
   end
 
