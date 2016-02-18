@@ -12,6 +12,7 @@ defmodule OhaiIrc do
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, ["#johncena"]]),
+      worker(FltiHandler, [client]),
       worker(FreifunkaGreetingHandler, [client])
     ]
 
