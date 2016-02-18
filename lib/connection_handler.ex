@@ -1,10 +1,10 @@
 defmodule ConnectionHandler do
   defmodule State do
-    defstruct host: "irc.rizon.net",
-              port: 6666,
-              pass: "",
-              nick: "kawaiibot",
-              user: "kawaiibot",
+    defstruct host: "alvarpi.hsmr.dn42",
+              port: 6660,
+              pass: "topkeklel",
+              nick: "hsmrBot",
+              user: "hsmrBot",
               name: "kawaiibot welcomes you",
               client: nil
   end
@@ -26,8 +26,8 @@ defmodule ConnectionHandler do
   end
 
   # Catch-all for messages you don't care about
-  def handle_info(_msg, state) do
-    # IO.inspect msg
+  def handle_info(msg, state) do
+    IO.inspect msg
     {:noreply, state}
   end
 

@@ -11,7 +11,7 @@ defmodule HsmrIrc do
     children = [
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
-      worker(LoginHandler, [client, ["#johncena"]]),
+      worker(LoginHandler, [client, ["#hsmr"]]),
       worker(FltiHandler, [client]),
       worker(FreifunkaGreetingHandler, [client])
     ]
