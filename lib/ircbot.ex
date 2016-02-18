@@ -1,0 +1,2 @@
+defmodule Ircbot do
+end
