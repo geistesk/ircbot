@@ -1,3 +1,5 @@
+import Integer, only: [is_even: 1]
+
 defmodule FltiHandler do
   @moduledoc """
   This event handler says when there are the next FTLI*-times
@@ -13,11 +15,11 @@ defmodule FltiHandler do
 
   def handle_info({:received, "!flti", from, channel}, client) do
     debug "#{from} asked in #{channel} for FLTI*"
-    
-    {_year, week} = :calendar.iso_week_number
-    weekday = case rem(week, 2) do
-      0 -> "Sonntag"
-      1 -> "Samstag"
+
+    {_, week} = :calendar.iso_week_number
+    weekday = case is_even(week) do
+      true -> "Sonntag"
+      false -> "Samstag"
     end
 
     ExIrc.Client.msg(

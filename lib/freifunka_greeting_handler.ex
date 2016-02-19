@@ -1,6 +1,7 @@
 defmodule FreifunkaGreetingHandler do
   @moduledoc """
-  This is an example event handler does nothing :3
+  This is an event handler which is greeting Users from the hsmr-webirc
+  (based on hostname) specially.
   """
   def start_link(client) do
     GenServer.start_link(__MODULE__, [client])
@@ -28,11 +29,9 @@ defmodule FreifunkaGreetingHandler do
       Enum.at(resp, 5, ""), Enum.at(resp, 3, ""), Enum.at(resp, 1) }
 
     # If the user from the webchat than let's grett :3
-    if nick != "" and host == "2001:4dd0:fc15:cafe:208:54ff:fe55:1498" do
+    if nick != "" and host == Application.get_env(:ircbot, :freifunkaHost) do
       debug "Received who-response for #{nick} with matching hostname."
-      ["Hej #{nick}!",
-       "Es freut uns, dass du es über den Webchat zu uns geschafft hast.",
-       "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauer kann, bis wer antwortet…"]
+      ["Hej #{nick}!" | Application.get_env(:ircbot, :freifunkaGreet)]
       |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))
     end
 

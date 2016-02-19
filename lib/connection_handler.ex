@@ -1,14 +1,4 @@
 defmodule ConnectionHandler do
-  defmodule State do
-    defstruct host: "alvarpi.hsmr.dn42",
-              port: 6660,
-              pass: "topkeklel",
-              nick: "hsmrBot",
-              user: "hsmrBot",
-              name: "kawaiibot welcomes you",
-              client: nil
-  end
-
   def start_link(client, state \\ %State{}) do
     GenServer.start_link(__MODULE__, [%{state | client: client}])
   end

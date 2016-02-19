@@ -1,6 +1,6 @@
 defmodule DummyHandler do
   @moduledoc """
-  This is an example event handler does nothing :3
+  This is an example event handler which does nothing :3
   """
   def start_link(client) do
     GenServer.start_link(__MODULE__, [client])

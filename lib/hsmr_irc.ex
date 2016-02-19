@@ -11,14 +11,14 @@ defmodule HsmrIrc do
     children = [
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
-      worker(LoginHandler, [client, ["#hsmr"]]),
+      worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
       worker(FltiHandler, [client]),
       worker(FreifunkaGreetingHandler, [client])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: OhaiIrc.Supervisor]
+    opts = [strategy: :one_for_one, name: HsmrIrc.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
