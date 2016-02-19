@@ -11,9 +11,10 @@ defmodule FreifunkaGreetingHandler do
     {:ok, client}
   end
 
-  def handle_info({:joined, _channel, user}, client) do
+  def handle_info({:joined, channel, user}, client) do
     # Asking who the new user is…
     # Response will be consumed in the next function
+    debug "#{user} has joined #{channel}. Queryin /who #{user}"
 
     ExIrc.Client.cmd(client, "who #{user}")
     {:noreply, client}
@@ -28,10 +29,11 @@ defmodule FreifunkaGreetingHandler do
 
     # If the user from the webchat than let's grett :3
     if nick != "" and host == "2001:4dd0:fc15:cafe:208:54ff:fe55:1498" do
+      debug "Received who-response for #{nick} with matching hostname."
       ["Hej #{nick}!",
        "Es freut uns, dass du es über den Webchat zu uns geschafft hast.",
        "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauer kann, bis wer antwortet…"]
-      |> Enum.each(fn txt -> ExIrc.Client.msg(client, :privmsg, channel, txt) end)
+      |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))
     end
 
     {:noreply, client}
@@ -39,7 +41,6 @@ defmodule FreifunkaGreetingHandler do
 
   # Catch-all for messages you don't care about
   def handle_info(_msg, client) do
-    # IO.inspect msg
     {:noreply, client}
   end
 
