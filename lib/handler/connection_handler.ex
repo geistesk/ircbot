@@ -5,7 +5,11 @@ defmodule ConnectionHandler do
 
   def init([state]) do
     ExIrc.Client.add_handler state.client, self
-    ExIrc.Client.connect! state.client, state.host, state.port
+    if state.ssl do
+      ExIrc.Client.connect_ssl! state.client, state.host, state.port
+    else
+      ExIrc.Client.connect! state.client, state.host, state.port
+    end
     {:ok, state}
   end
 

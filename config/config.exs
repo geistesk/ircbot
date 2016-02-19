@@ -3,7 +3,8 @@ use Mix.Config
 config :ircbot,
   # General IRC-Settings
   ircHost: "alvarpi.hsmr.dn42",
-  ircPort:  6660,
+  ircPort: 9999,
+  ircSsl:  true,
   ircNick: "hsmrBot",
   ircPass: "topkeklel",
   ircUser: "hsmrBot",
