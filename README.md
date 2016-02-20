@@ -13,7 +13,6 @@ concurrent. 'Nuff said.
  * Ridiculous replies to random messages
  * C Y B E R
  * It's GNU plus Linux
-* Fix Bug in SpaceApi.Space.state-message
 * Merge Freifunka-Greeting and Greeting
  * remove greeting for known users
 * Bell-Function which annoys multiple users

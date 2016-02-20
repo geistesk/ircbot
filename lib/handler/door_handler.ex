@@ -23,8 +23,6 @@ defmodule DoorHandler do
             ["Aktuell ist wohl niemand da."]
           {true, _, ""} ->
             ["Der Space ist gerade besetzt!"]
-          {true, _, Nil} ->
-            ["Der Space ist gerade besetzt!"]
           {true, _, msg} ->
             ["Der Space ist gerade besetzt.", msg]
         end
