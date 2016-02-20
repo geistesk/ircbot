@@ -14,7 +14,7 @@ defmodule HurrDurrHandler do
   def handle_info({:received, message, from, channel}, client) do
     pattern = :binary.compile_pattern(["hurr", "durr"])
     if String.contains?(message, pattern) do
-      debug "#{from} requested a \"hurr durr\" in ${channel}"
+      debug "#{from} requested a \"hurr durr\" in #{channel}"
       ExIrc.Client.msg(client, :privmsg, channel, "hurr durr~")
     end
     {:noreply, client}
