@@ -17,4 +17,7 @@ config :ircbot,
     "Es freut uns, dass du es über den Webchat zu uns nach geschafft hast.",
     "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauer kann, bis wer antwortet…"],
 
-  doorSpaceApi: "https://hsmr.cc/spaceapi.json"
+  doorSpaceApi: "https://hsmr.cc/spaceapi.json",
+
+  greetingNew: "Herzlich Willkommen! Schön, dass du hier mal vorbei schaust.",
+  greetingOld: "Schön, dass du mal wieder vorbei schaust…"

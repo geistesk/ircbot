@@ -22,7 +22,7 @@ defmodule LoginHandler do
   end
 
   def handle_info({:joined, channel}, client) do
-      debug "Joined #{channel}"
+    debug "Joined #{channel}"
     {:noreply, client}
   end
 
