@@ -12,8 +12,11 @@ defmodule HsmrIrc do
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
+      worker(FreifunkaGreetingHandler, [client]),
+      # cmd: !flti
       worker(FltiHandler, [client]),
-      worker(FreifunkaGreetingHandler, [client])
+      # cmd: !base, !door
+      worker(DoorHandler, [client])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

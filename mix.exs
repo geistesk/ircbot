@@ -10,26 +10,16 @@ defmodule Ircbot.Mixfile do
      deps: deps]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
     [
       mod: {HsmrIrc, []},
-      applications: [:exirc, :logger]
+      applications: [:exirc, :httpoison, :logger]
     ]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
-    [{:exirc, "~> 0.9.2"}]
+    [{:exirc, "~> 0.9.2"},
+     {:spaceapi, "~> 0.1.1"},
+     {:httpoison, "~> 0.8.0"}]
   end
 end
