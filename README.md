@@ -11,7 +11,6 @@ concurrent. 'Nuff said.
 * Telegram-to-IRC-Gateway
 * Expand HurrDurr to official Shitposting
  * Ridiculous replies to random messages
- * C Y B E R
  * It's GNU plus Linux
 * Merge Freifunka-Greeting and Greeting
  * remove greeting for known users
@@ -19,7 +18,6 @@ concurrent. 'Nuff said.
  * !bell add [You will be notified]
  * !bell del [You won't be notified]
  * !bell [Everyone in the list will be notified now]
-* Merge Door and FLTI*
- * Calculate date of next the FLTI*-times
+* Calculate date of next the FLTI*-times
 * Deployment-Script
  * different config for development and production™
