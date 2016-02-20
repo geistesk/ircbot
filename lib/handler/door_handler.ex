@@ -1,6 +1,9 @@
 defmodule DoorHandler do
+  import Integer, only: [is_even: 1]
   @moduledoc """
-  This is an event handler which checks the doorstate for you by !door or !base
+  This is an event handler which does door-things™
+  !base, !door use the Space API
+  !flti calculates the next FLTI*-times
   """
   def start_link(client) do
     GenServer.start_link(__MODULE__, [client])
@@ -9,6 +12,22 @@ defmodule DoorHandler do
   def init([client]) do
     ExIrc.Client.add_handler client, self
     {:ok, client}
+  end
+
+  def handle_info({:received, "!flti", from, channel}, client) do
+    debug "#{from} asked in #{channel} for FLTI*"
+
+    {_, week} = :calendar.iso_week_number
+    weekday = case is_even(week) do
+      true -> "Sonntag"
+      false -> "Samstag"
+    end
+
+    ExIrc.Client.msg(
+      client, :privmsg, channel,
+      "#{from}: Die FTLI*-Zeiten in dieser Woche sind an einem #{weekday}.")
+
+    {:noreply, client}
   end
 
   def handle_info({:received, "!door", from, channel}, client), do:

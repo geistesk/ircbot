@@ -15,9 +15,7 @@ defmodule HsmrIrc do
       worker(GreetingHandler, [client, %{}]),
       worker(FreifunkaGreetingHandler, [client]),
       worker(HurrDurrHandler, [client]),
-      # cmd: !flti
-      worker(FltiHandler, [client]),
-      # cmd: !base, !door
+      # cmd: !base, !door, !flti
       worker(DoorHandler, [client])
     ]
 
