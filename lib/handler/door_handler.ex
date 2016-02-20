@@ -1,6 +1,6 @@
 defmodule DoorHandler do
   @moduledoc """
-  This is an example event handler which does nothing :3
+  This is an event handler which checks the doorstate for you by !door or !base
   """
   def start_link(client) do
     GenServer.start_link(__MODULE__, [client])
