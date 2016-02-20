@@ -1,20 +1,11 @@
 # Ircbot
 
-**TODO: Add description**
+**Just another stupid IRC-Bot**
+This is a crappy IRC-Bot based on [ExIrc](https://github.com/bitwalker/exirc)
+with no tests for failures. It may kills your cat. But it will be killed highly
+concurrent. 'Nuff said.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
-  1. Add ircbot to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:ircbot, "~> 0.0.1"}]
-        end
-
-  2. Ensure ircbot is started before your application:
-
-        def application do
-          [applications: [:ircbot]]
-        end
-
+## TODO
+* RMV-Checks for next bus [!buba]
+* Telegram-to-IRC-Gateway
+* Ridiculous replies to random messages
