@@ -11,7 +11,6 @@ concurrent. 'Nuff said.
 * Telegram-to-IRC-Gateway
 * Expand HurrDurr to official Shitposting
  * Ridiculous replies to random messages
- * It's GNU plus Linux
 * Merge Freifunka-Greeting and Greeting
  * remove greeting for known users
 * Bell-Function which annoys multiple users
@@ -21,3 +20,5 @@ concurrent. 'Nuff said.
 * Calculate date of next the FLTI*-times
 * Deployment-Script
  * different config for development and production™
+* Tsundere mode
+* gibbe mode
