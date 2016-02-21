@@ -9,10 +9,8 @@ concurrent. 'Nuff said.
 ## TODO
 * RMV-Checks for next bus [!buba]
 * Telegram-to-IRC-Gateway
-* Expand HurrDurr to official Shitposting
+* official Shitposting
  * Ridiculous replies to random messages
-* Merge Freifunka-Greeting and Greeting
- * remove greeting for known users
 * Bell-Function which annoys multiple users
  * !bell add [You will be notified]
  * !bell del [You won't be notified]
@@ -22,3 +20,4 @@ concurrent. 'Nuff said.
  * different config for development and production™
 * Tsundere mode
 * gibbe mode
+* y/n (magische Miesmuschel)

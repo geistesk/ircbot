@@ -12,9 +12,8 @@ defmodule HsmrIrc do
       # Define workers and child supervisors to be supervised
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
-      worker(GreetingHandler, [client, %{}]),
       worker(FreifunkaGreetingHandler, [client]),
-      worker(ShitpostingHandler, [client]),
+      worker(ShitpostingHandler, [client, :os.system_time]),
       # cmd: !base, !door, !flti
       worker(DoorHandler, [client])
     ]
