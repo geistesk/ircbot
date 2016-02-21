@@ -13,7 +13,7 @@ defmodule HsmrIrc do
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
       worker(FreifunkaGreetingHandler, [client]),
-      worker(ShitpostingHandler, [client, :os.system_time]),
+      worker(ShitpostingHandler, [client, :os.system_time - 30_000_000_000]),
       # cmd: !ask
       worker(MagicConchHandler, [client]),
       # cmd: !base, !door, !flti

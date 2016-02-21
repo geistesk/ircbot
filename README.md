@@ -10,14 +10,13 @@ concurrent. 'Nuff said.
 * RMV-Checks for next bus [!buba]
 * Telegram-to-IRC-Gateway
 * official Shitposting
- * Ridiculous replies to random messages
+ * Ridiculous replies to random messages; the ride never ends :^)
 * Bell-Function which annoys multiple users
- * !bell add [You will be notified]
- * !bell del [You won't be notified]
- * !bell [Everyone in the list will be notified now]
+ * store bell-list in external, mutable config
 * Calculate date of next the FLTI*-times
 * Deployment-Script
  * different config for development and production™
 * Tsundere mode
 * gibbe mode
 * !help which shows known commands
+* Stupid Regex like 's/foo/bar/'
