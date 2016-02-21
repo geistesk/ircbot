@@ -15,7 +15,7 @@ config :ircbot,
   freifunkaHost: "2001:4dd0:fc15:cafe:208:54ff:fe55:1498",
   freifunkaGreet: [
     "Es freut uns, dass du über den Webchat zu uns gefunden hast.",
-    "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauer kann, bis wer antwortet…"],
+    "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauern kann, bis wer antwortet…"],
 
   # DoorHandler
   doorSpaceApi: "https://hsmr.cc/spaceapi.json",
@@ -23,4 +23,7 @@ config :ircbot,
   # MagicConchHandler
   magicConchAnswers: ["Heute", "Morgen", "So wird das nichts", "Versuch es nochmal",
                       "Das war super", "Ja", "Nein", "Vielleicht", "Mach mal 'ne Pause",
-                      "Frag Mutti", "Vergiß es", "Mach weiter"]
+                      "Frag Mutti", "Vergiß es", "Mach weiter"],
+
+  # BellHandler
+  bellMessage: "Es wurden mehrere Personen alarmiert."
