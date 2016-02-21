@@ -20,4 +20,3 @@ concurrent. 'Nuff said.
  * different config for development and production™
 * Tsundere mode
 * gibbe mode
-* y/n (magische Miesmuschel)

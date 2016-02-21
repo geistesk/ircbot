@@ -21,4 +21,8 @@ config :ircbot,
   doorSpaceApi: "https://hsmr.cc/spaceapi.json",
 
   greetingNew: "Herzlich Willkommen! Schön, dass du hier mal vorbei schaust.",
-  greetingOld: "Schön, dass du mal wieder vorbei schaust…"
+  greetingOld: "Schön, dass du mal wieder vorbei schaust…",
+
+  magicConchAnswers: ["Heute", "Morgen", "So wird das nichts", "Versuch es nochmal",
+                      "Das war super", "Ja", "Nein", "Vielleicht", "Mach mal 'ne Pause",
+                      "Frag Mutti", "Vergiß es", "Mach weiter"]
