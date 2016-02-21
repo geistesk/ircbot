@@ -49,6 +49,20 @@ defmodule ShitpostingHandler do
     end
   end
 
+  defp handle_otaku(message, from, channel, client) do
+    otaku_dict = [
+      "baka", "uguu", "バカ","ばか", "senpai", "anime", "manga", "kawaii", "moe",
+      "tsundere", "yandere", "otaku", "weaboo"]
+    pattern = :binary.compile_pattern(otaku_dict)
+    if String.contains?(String.downcase(message), pattern) do
+      ExIrc.Client.msg(client, :privmsg, channel,
+        "#{from}: " <> Enum.random(otaku_dict))
+      1
+    else
+      0
+    end
+  end
+
   # There are some words where I want to have a stupid reaction.
   # This goes here..
   def handle_info({:received, message, from, channel}, {client, last_shitpost}) do
@@ -56,7 +70,8 @@ defmodule ShitpostingHandler do
        :random.uniform < 0.33 and
        (handle_hurrdurr(message, from, channel, client) +
         handle_cyber(   message, from, channel, client) +
-        handle_gnu_rms( message, from, channel, client) > 0) do
+        handle_gnu_rms( message, from, channel, client) +
+        handle_otaku(   message, from, channel, client) > 0) do
        {:noreply, {client, :os.system_time}}
      else
        {:noreply, {client, last_shitpost + 2_500_000_000}}
