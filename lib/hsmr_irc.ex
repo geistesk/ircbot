@@ -13,10 +13,12 @@ defmodule HsmrIrc do
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
       worker(FreifunkaGreetingHandler, [client]),
-      worker(MagicConchHandler, [client]),
       worker(ShitpostingHandler, [client, :os.system_time]),
+      # cmd: !ask
+      worker(MagicConchHandler, [client]),
       # cmd: !base, !door, !flti
-      worker(DoorHandler, [client])
+      worker(DoorHandler, [client]),
+      worker(BellHandler, [client, %{}])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

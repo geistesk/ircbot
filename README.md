@@ -20,3 +20,4 @@ concurrent. 'Nuff said.
  * different config for development and production™
 * Tsundere mode
 * gibbe mode
+* !help which shows known commands
