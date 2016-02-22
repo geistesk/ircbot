@@ -12,9 +12,9 @@ concurrent. 'Nuff said.
  * Sticker --> ASCII
 * official Shitposting
  * Ridiculous replies to random messages; the ride never ends :^)
-* Calculate date of next the FLTI\*-times
 * Deployment-Script
  * different config for development and production™
+ * strange Unicode-Bug
 * Tsundere mode
 * gibbe mode
 * !help which shows known commands

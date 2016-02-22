@@ -15,17 +15,22 @@ defmodule DoorHandler do
   end
 
   def handle_info({:received, "!flti", from, channel}, client) do
-    debug "#{from} asked in #{channel} for FLTI*"
-
     {_, week} = :calendar.iso_week_number
+    {date, _} = :calendar.local_time
+    day_of_week = :calendar.day_of_the_week(date)
     weekday = case is_even(week) do
-      true -> "Sonntag"
-      false -> "Samstag"
+      true -> 7
+      false -> 6
     end
 
-    ExIrc.Client.msg(
-      client, :privmsg, channel,
-      "#{from}: Die FTLI*-Zeiten in dieser Woche sind an einem #{weekday}.")
+    message = "#{from}: Die FTLI*-Zeiten sind " <> case {day_of_week, weekday} do
+      {x, x} ->                 "heute"
+      {x, y} when y - x == 1 -> "morgen"
+      {7, 6} ->                 "nächste Woche Samstag"
+      {_, 6} ->                 "diesen Samstag"
+      {_, 7} ->                 "diesen Sonntag"
+    end <> " von 16:00 bis 20:00 Uhr."
+    ExIrc.Client.msg(client, :privmsg, channel, message)
 
     {:noreply, client}
   end
