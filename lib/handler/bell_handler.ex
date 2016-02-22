@@ -41,12 +41,19 @@ defmodule BellHandler do
   # fire the bell
   def handle_info({:received, "!bell", from, channel}, {client, bell}) do
     debug "#{from} rang the bell in #{channel}"
-    person = List.foldl(
-      bell[channel], "", fn user, txt -> "#{txt} #{user}," end)
+
+    # Intersect the current users with registred users and only alert those
+    clients = ExIrc.Client.channel_users(client, channel)
+              |> Enum.into(HashSet.new)
+    bell_users = Enum.into(bell[channel], HashSet.new)
+    users = HashSet.intersection(clients, bell_users) |> HashSet.to_list
+
+    person_txt = List.foldl(
+      users, "", fn user, txt -> "#{txt} #{user}," end)
       |> String.rstrip(?,)
     ExIrc.Client.msg(
       client, :privmsg, channel,
-      "Die folgenden Personen mögen sich bitte einfinden:#{person}!")
+      "Die folgenden Personen mögen sich bitte einfinden:#{person_txt}!")
     {:noreply, {client, bell}}
   end
 
