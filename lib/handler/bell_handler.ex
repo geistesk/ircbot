@@ -1,6 +1,6 @@
 defmodule BellHandler do
   @moduledoc """
-  TODO
+  A simple handler to notify some pre-registered users
   """
   def start_link(client, bell) do
     GenServer.start_link(__MODULE__, [client, bell])
@@ -70,6 +70,16 @@ defmodule BellHandler do
         "nicht"
       end <>
       " im Bell für #{channel} registriert.")
+    {:noreply, {client, bell}}
+  end
+
+  def handle_info({:received, "!bell help", _from, channel}, {client, bell}) do
+    ["!bell        Alle für #{channel} hinzugefügten Personen werden alamiert.",
+     "!bell add    Fügt Dich für Benachrichtigungen aus #{channel} hinzu",
+     "!bell rem    Entfernt Dich für #{channel} von Benachrichtigungen",
+     "!bell check  Gibt Dir zurück, ob Du für #{channel} benachrichtigt wirst",
+     "!bell help   Dieser Text…"]
+    |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))
     {:noreply, {client, bell}}
   end
 
