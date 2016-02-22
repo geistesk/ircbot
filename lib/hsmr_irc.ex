@@ -18,7 +18,8 @@ defmodule HsmrIrc do
       worker(MagicConchHandler, [client]),
       # cmd: !base, !door, !flti
       worker(DoorHandler, [client]),
-      worker(BellHandler, [client, %{}])
+      worker(BellHandler, [client,
+        BellHandler.json_to_map(Application.get_env(:ircbot, :bellConfigFile))])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

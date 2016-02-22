@@ -9,14 +9,15 @@ concurrent. 'Nuff said.
 ## TODO
 * RMV-Checks for next bus [!buba]
 * Telegram-to-IRC-Gateway
+ * Sticker --> ASCII
 * official Shitposting
  * Ridiculous replies to random messages; the ride never ends :^)
-* Bell-Function which annoys multiple users
- * store bell-list in external, mutable config
-* Calculate date of next the FLTI*-times
+* Calculate date of next the FLTI\*-times
 * Deployment-Script
  * different config for development and production™
 * Tsundere mode
 * gibbe mode
 * !help which shows known commands
 * Stupid Regex like 's/foo/bar/'
+* Handle disconnect
+* external Logging handler

@@ -8,6 +8,7 @@
   "hackney": {:hex, :hackney, "1.4.8"},
   "httpoison": {:hex, :httpoison, "0.8.1"},
   "idna": {:hex, :idna, "1.0.3"},
+  "json": {:hex, :json, "0.3.3"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "poison": {:hex, :poison, "2.1.0"},
   "providers": {:hex, :providers, "1.6.0"},
