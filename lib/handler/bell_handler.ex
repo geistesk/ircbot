@@ -23,6 +23,7 @@ defmodule BellHandler do
       debug "#{from} is already registered for #{channel}"
       {:noreply, {client, bell}}
     else
+      # TODO add in config, too
       debug "#{from} is now registered for #{channel}"
       new_users = [from | bell[channel]]
       {:noreply, {client, %{bell | channel => new_users}}}
@@ -31,6 +32,7 @@ defmodule BellHandler do
 
   # process a /rem/-request
   def handle_info({:received, "!bell rem", from, channel}, {client, bell}) do
+    # TODO remove in config too
     debug "#{from} was removed for #{channel}"
     new_users = List.delete(bell[channel], from)
     {:noreply, {client, %{bell | channel => new_users}}}
@@ -39,10 +41,12 @@ defmodule BellHandler do
   # fire the bell
   def handle_info({:received, "!bell", from, channel}, {client, bell}) do
     debug "#{from} rang the bell in #{channel}"
-    Enum.each(bell[channel], &ExIrc.Client.msg(
-      client, :privmsg, &1, "#{from} rang the bell in #{channel}!"))
-    ExIrc.Client.msg(client, :privmsg, channel,
-      "#{from}: Es wurden mehrere Personen alarmiert.")
+    person = List.foldl(
+      bell[channel], "", fn user, txt -> "#{txt} #{user}," end)
+      |> String.rstrip(?,)
+    ExIrc.Client.msg(
+      client, :privmsg, channel,
+      "Die folgenden Personen mögen sich bitte einfinden:#{person}!")
     {:noreply, {client, bell}}
   end
 
