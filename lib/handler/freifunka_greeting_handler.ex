@@ -25,11 +25,13 @@ defmodule FreifunkaGreetingHandler do
     # 352 is the magic number for an /who-Response which data
     # The {5th,3rd,1st} element in the resulting string is the {nick,host,channel}name
 
-    {nick, host, channel} = {
-      Enum.at(resp, 5, ""), Enum.at(resp, 3, ""), Enum.at(resp, 1) }
+    who = Enum.map(0..7, &"e" <> Integer.to_string(&1) |> String.to_atom)
+          |> Enum.zip(resp)
+    {channel, host, nick, name} = {who[:e1], who[:e3], who[:e5], who[:e7]}
 
     # If the user from the webchat than let's grett :3
-    if nick != "" and host == Application.get_env(:ircbot, :freifunkaHost) do
+    if nick != "" and host == Application.get_env(:ircbot, :freifunkaHost) and
+       String.match?(name, Application.get_env(:ircbot, :freifunkaName)) do
       debug "Received who-response for #{nick} with matching hostname."
       ["Hej #{nick}!" | Application.get_env(:ircbot, :freifunkaGreet)]
       |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))

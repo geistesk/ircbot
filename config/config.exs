@@ -13,6 +13,7 @@ config :ircbot,
 
   # FreifunkaGreetingHandler
   freifunkaHost: "2001:4dd0:fc15:cafe:208:54ff:fe55:1498",
+  freifunkaName: ~r/is using a Web IRC client$/,
   freifunkaGreet: [
     "Es freut uns, dass du über den Webchat zu uns gefunden hast.",
     "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauern kann, bis wer antwortet…"],
