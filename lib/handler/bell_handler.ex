@@ -1,3 +1,5 @@
+require Logger
+
 defmodule BellHandler do
   @moduledoc """
   A simple handler to notify some pre-registered users
@@ -13,18 +15,30 @@ defmodule BellHandler do
 
   # Write config to file. Will be triggered after changes (join, add, rem)
   def export_config(bell, filename) do
-    {:ok, file} = File.open(filename, [:write])
-    {:ok, json} = JSON.encode(bell)
-    :ok = IO.binwrite(file, json)
-    :ok = File.close(file)
+    try do
+      Logger.info("[BellHandler] Try to export config to #{filename}")
+      {:ok, file} = File.open(filename, [:write])
+      {:ok, json} = JSON.encode(bell)
+      :ok = IO.binwrite(file, json)
+      :ok = File.close(file)
+    rescue
+      _ -> Logger.warn("[BellHandler] Export failed!")
+    end
   end
 
   # Returns a bell-state-map based on a given file
   def json_to_map(filename) do
     if File.exists?(filename) do
-      {:ok, bell} = File.read!(filename) |> JSON.decode
-      bell
+      Logger.info("[BellHandler] Try to read config from #{filename}")
+      try do
+        {:ok, bell} = File.read!(filename) |> JSON.decode
+        bell
+      rescue
+        _ -> Logger.warn("[BellHandler] Failed to read config.")
+      end
     else
+      Logger.warn(
+        "[BellHandler] #{filename} does not exists. Return empty config")
       %{}
     end
   end
@@ -34,6 +48,7 @@ defmodule BellHandler do
     if channel in Map.keys(bell) do
       {:noreply, {client, bell}}
     else
+      Logger.info("[BellHandler] Adding #{channel} to state")
       new_bell = Dict.put(bell, channel, [])
       export_config(new_bell, Application.get_env(:ircbot, :bellConfigFile))
       {:noreply, {client, new_bell}}
@@ -43,10 +58,10 @@ defmodule BellHandler do
   # process a /add/-request
   def handle_info({:received, "!bell add", from, channel}, {client, bell}) do
     if from in bell[channel] do
-      debug "#{from} is already registered for #{channel}"
+      Logger.info("[BellHandler] #{from} is already registered for #{channel}")
       {:noreply, {client, bell}}
     else
-      debug "#{from} is now registered for #{channel}"
+      Logger.info("[BellHandler] #{from} is now registered for #{channel}")
       new_bell = %{bell | channel => [from | bell[channel]]}
       export_config(new_bell, Application.get_env(:ircbot, :bellConfigFile))
       {:noreply, {client, new_bell}}
@@ -55,13 +70,14 @@ defmodule BellHandler do
 
   # process a /rem/-request
   def handle_info({:received, "!bell rem", from, channel}, {client, bell}) do
-    debug "#{from} was removed for #{channel}"
+    Logger.info("[BellHandler] #{from} was removed for #{channel}")
     new_bell = %{bell | channel => List.delete(bell[channel], from)}
     export_config(new_bell, Application.get_env(:ircbot, :bellConfigFile))
     {:noreply, {client, new_bell}}
   end
 
   def handle_info({:received, "!bell check", from, channel}, {client, bell}) do
+    Logger.info("[BellHandler] #{from} checkd own status")
     ExIrc.Client.msg(client, :privmsg, channel,
       "#{from}: Du bist " <>
       if from in bell[channel] do
@@ -85,7 +101,7 @@ defmodule BellHandler do
 
   # fire the bell
   def handle_info({:received, "!bell", from, channel}, {client, bell}) do
-    debug "#{from} rang the bell in #{channel}"
+    Logger.info("[BellHandler] #{from} rang the bell in #{channel}")
 
     # Intersect the current users with registred users and only alert those
     clients = ExIrc.Client.channel_users(client, channel)
@@ -109,9 +125,5 @@ defmodule BellHandler do
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     {:noreply, state}
-  end
-
-  defp debug(msg) do
-    IO.puts IO.ANSI.yellow() <> "[BellHandler] " <> msg <> IO.ANSI.reset()
   end
 end

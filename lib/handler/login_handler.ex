@@ -1,3 +1,5 @@
+require Logger
+
 defmodule LoginHandler do
   @moduledoc """
   This is an example event handler that listens for login events and then
@@ -16,22 +18,18 @@ defmodule LoginHandler do
   end
 
   def handle_info(:logged_in, state = {client, channels}) do
-    debug "Logged in to server"
+    Logger.info("[LoginHandler] Logged in to server")
     channels |> Enum.map(&ExIrc.Client.join client, &1)
     {:noreply, state}
   end
 
   def handle_info({:joined, channel}, client) do
-    debug "Joined #{channel}"
+    Logger.info("[LoginHandler] Joined #{channel}")
     {:noreply, client}
   end
 
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     {:noreply, state}
-  end
-
-  defp debug(msg) do
-    IO.puts IO.ANSI.yellow() <> msg <> IO.ANSI.reset()
   end
 end

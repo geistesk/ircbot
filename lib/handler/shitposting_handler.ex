@@ -1,3 +1,5 @@
+require Logger
+
 defmodule ShitpostingHandler do
   @moduledoc """
   This is an stupid event handler for high quality shitposting :^)
@@ -77,10 +79,12 @@ defmodule ShitpostingHandler do
     case Enum.filter(shitpostings,
     fn post -> post.condition.(message, from, channel, client) end) do
       [] ->
+        Logger.debug("[ShitpostingHandler] Found no shitpost for this message")
         false
       postings = _ ->
         post = Enum.random(postings)
-        debug "Invoking #{post.name} based on #{from}s message in #{channel}"
+        Logger.info(
+          "[ShitpostingHandler] Invoking #{post.name} based on #{from}s message in #{channel}")
         post.execution.(message, from, channel, client)
         true
     end
@@ -100,7 +104,8 @@ defmodule ShitpostingHandler do
 
   # Let's greet Tobi-Senpai. Uguu~
   def handle_info({:joined, channel, "towb"}, {client, last_shitpost}) do
-    debug "Tobi-Senpai has joined us in #{channel}. Uguu, uguu~~"
+    Logger.info(
+      "[ShitpostingHandler] Tobi-Senpai has joined us in #{channel}. Uguu, uguu~~")
     ExIrc.Client.msg(client, :privmsg, channel, "Ohaaiii Tobi-senpai~")
     {:noreply, {client, last_shitpost}}
   end
@@ -108,9 +113,5 @@ defmodule ShitpostingHandler do
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     {:noreply, state}
-  end
-
-  defp debug(msg) do
-    IO.puts IO.ANSI.yellow() <> msg <> IO.ANSI.reset()
   end
 end

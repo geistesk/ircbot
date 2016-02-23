@@ -1,3 +1,5 @@
+require Logger
+
 defmodule FreifunkaGreetingHandler do
   @moduledoc """
   This is an event handler which is greeting Users from the hsmr-webirc
@@ -15,7 +17,8 @@ defmodule FreifunkaGreetingHandler do
   def handle_info({:joined, channel, user}, client) do
     # Asking who the new user is…
     # Response will be consumed in the next function
-    debug "#{user} has joined #{channel}. Queryin /who #{user}"
+    Logger.info(
+      "[FreifunkaGreetingHandler] #{user} has joined #{channel}. Queryin /who #{user}")
 
     ExIrc.Client.cmd(client, "who #{user}")
     {:noreply, client}
@@ -32,7 +35,8 @@ defmodule FreifunkaGreetingHandler do
     # If the user from the webchat than let's grett :3
     if nick != "" and host == Application.get_env(:ircbot, :freifunkaHost) and
        String.match?(name, Application.get_env(:ircbot, :freifunkaName)) do
-      debug "Received who-response for #{nick} with matching hostname."
+      Logger.info(
+        "[FreifunkaGreetingHandler] Received who-response for #{nick} with matching hostname.")
       ["Hej #{nick}!" | Application.get_env(:ircbot, :freifunkaGreet)]
       |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))
     end
@@ -43,9 +47,5 @@ defmodule FreifunkaGreetingHandler do
   # Catch-all for messages you don't care about
   def handle_info(_msg, client) do
     {:noreply, client}
-  end
-
-  defp debug(msg) do
-    IO.puts IO.ANSI.yellow() <> msg <> IO.ANSI.reset()
   end
 end

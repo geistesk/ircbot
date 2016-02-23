@@ -14,7 +14,7 @@ defmodule Ircbot.Mixfile do
   def application do
     [
       mod: {HsmrIrc, []},
-      applications: [:exirc, :httpoison, :spaceapi, :poison]
+      applications: [:exirc, :httpoison, :spaceapi, :poison, :logger]
     ]
   end
 

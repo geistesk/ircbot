@@ -18,6 +18,5 @@ concurrent. 'Nuff said.
 * Tsundere mode
 * gibbe mode
 * !help which shows known commands
-* Stupid Regex like 's/foo/bar/'
 * Handle disconnect
 * external Logging handler

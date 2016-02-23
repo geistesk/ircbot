@@ -1,3 +1,5 @@
+require Logger
+
 defmodule DoorHandler do
   import Integer, only: [is_even: 1]
   @moduledoc """
@@ -15,6 +17,8 @@ defmodule DoorHandler do
   end
 
   def handle_info({:received, "!flti", from, channel}, client) do
+    Logger.info("[DoorHandler] #{from} asked for FLTI* in #{channel}")
+
     {_, week} = :calendar.iso_week_number
     {date, _} = :calendar.local_time
     day_of_week = :calendar.day_of_the_week(date)
@@ -39,6 +43,8 @@ defmodule DoorHandler do
     handle_info({:received, "!base", from, channel}, client)
 
   def handle_info({:received, "!base", from, channel}, client) do
+    Logger.info("[DoorHandler] #{from} asked for basestate in #{channel}")
+
     case HTTPoison.get(Application.get_env(:ircbot, :doorSpaceApi)) do
       {:ok, resp} ->
         space = SpaceApi.from_string(resp.body)
@@ -53,7 +59,7 @@ defmodule DoorHandler do
         |> Enum.each(
           &ExIrc.Client.msg(client, :privmsg, channel, from <> ": " <> &1))
       {:error, err} ->
-        debug "Could not fetch Space API: #{err.reason}"
+        Logger.warn("[DoorHandler] Could not fetch Space API: #{err.reason}")
     end
     {:noreply, client}
   end
@@ -61,9 +67,5 @@ defmodule DoorHandler do
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     {:noreply, state}
-  end
-
-  defp debug(msg) do
-    IO.puts IO.ANSI.yellow() <> msg <> IO.ANSI.reset()
   end
 end
