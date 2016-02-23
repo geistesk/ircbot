@@ -22,7 +22,7 @@ defmodule ReplaceHandler do
       handle_regex(from, last_msg, message, channel, client)
       {:noreply, {client, last_msgs}}
     else
-      new_last_msgs = if last_msg == nil do
+      if last_msg == nil do
         chan_msgs = Dict.put(last_msgs[channel], from, message)
         {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
       else
