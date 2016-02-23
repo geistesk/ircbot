@@ -23,3 +23,6 @@ concurrent. 'Nuff said.
  * strange Unicode-Bug
 * Tsundere mode
 * Handle disconnect
+
+## License
+Have a look at `UNLICENSE`.
