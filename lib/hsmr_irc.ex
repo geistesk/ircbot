@@ -18,6 +18,9 @@ defmodule HsmrIrc do
       worker(MagicConchHandler, [client]),
       # cmd: !base, !door, !flti
       worker(DoorHandler, [client]),
+      # s/FOO/BAR/
+      worker(ReplaceHandler, [client, %{}]),
+      # !bell {,add,rem,help}
       worker(BellHandler, [client,
         BellHandler.json_to_map(Application.get_env(:ircbot, :bellConfigFile))])
     ]

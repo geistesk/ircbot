@@ -16,7 +16,7 @@ config :ircbot,
   freifunkaName: ~r/is using a Web IRC client$/,
   freifunkaGreet: [
     "Es freut uns, dass du über den Webchat zu uns gefunden hast.",
-    "Falls du Fragen hast, stelle sie einfach. Bitte bedenke, dass es aber etwas dauern kann, bis wer antwortet…"],
+    "Falls du Fragen hast, stelle sie einfach. Wenn sich keiner sofort meldet und es dringend ist, so tippe einfach !bell"],
 
   # DoorHandler
   doorSpaceApi: "https://hsmr.cc/spaceapi.json",
