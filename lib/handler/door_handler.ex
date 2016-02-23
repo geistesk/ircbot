@@ -1,7 +1,6 @@
 require Logger
 
 defmodule DoorHandler do
-  import Integer, only: [is_even: 1]
   @moduledoc """
   This is an event handler which does door-things™
   !base, !door use the Space API
@@ -19,18 +18,15 @@ defmodule DoorHandler do
   def handle_info({:received, "!flti", from, channel}, client) do
     Logger.info("[DoorHandler] #{from} asked for FLTI* in #{channel}")
 
-    {_, week} = :calendar.iso_week_number
-    {date, _} = :calendar.local_time
+    {_, week}   = :calendar.iso_week_number
+    {date, _}   = :calendar.local_time
     day_of_week = :calendar.day_of_the_week(date)
-    weekday = case is_even(week) do
-      true -> 7
-      false -> 6
-    end
+    weekday     = 7 - rem(week, 2) # Sonntag, falls gerade | Samstag, sonst
 
     message = "#{from}: Die FTLI*-Zeiten sind " <> case {day_of_week, weekday} do
       {x, x} ->                 "heute"
       {x, y} when y - x == 1 -> "morgen"
-      {7, 6} ->                 "nächste Woche Samstag"
+      {7, 6} ->                 "nächste Woche Sonntag"
       {_, 6} ->                 "diesen Samstag"
       {_, 7} ->                 "diesen Sonntag"
     end <> " von 16:00 bis 20:00 Uhr."

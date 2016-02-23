@@ -14,7 +14,7 @@ defmodule MagicConchHandler do
   end
 
   def handle_info({:received, message, from, channel}, client) do
-    if String.match?(message, ~r/!ask.*/) do
+    if String.match?(message, ~r/^!ask.*/) do
       Logger.info("[MagicConchHandler] #{from} queried the magic conch in #{channel}")
       response = Application.get_env(:ircbot, :magicConchAnswers) |> Enum.random
       ExIrc.Client.msg(client, :privmsg, channel, "#{from}: #{response}.")
