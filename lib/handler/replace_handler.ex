@@ -26,14 +26,23 @@ defmodule ReplaceHandler do
       handle_regex(from, last_msg, message, channel, client)
       {:noreply, {client, last_msgs}}
     else
-      if last_msg == nil do
-        Logger.debug("[ReplaceHandler] #{from} wrote first message in #{channel}")
-        chan_msgs = Dict.put(last_msgs[channel], from, message)
-        {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
-      else
-        Logger.debug("[ReplaceHandler] #{from} wrote new message in #{channel}")
-        chan_msgs = %{last_msgs[channel] | from => message}
-        {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
+      cond do
+        last_msgs[channel] == nil ->
+          # strange case which should not occur… but occured just on the Pi
+          Logger.warn("[ReplaceHandler] #{channel} wasn't init yet!")
+          Logger.warn("[ReplaceHandler] Init #{channel} and added #{from}s message")
+          new_last_msgs = Dict.put(last_msgs, channel, %{from => message})
+          {:noreply, {client, new_last_msgs}}
+
+        last_msg == nil ->
+          Logger.debug("[ReplaceHandler] #{from} wrote first message in #{channel}")
+          chan_msgs = Dict.put(last_msgs[channel], from, message)
+          {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
+
+        true ->
+          Logger.debug("[ReplaceHandler] #{from} wrote new message in #{channel}")
+          chan_msgs = %{last_msgs[channel] | from => message}
+          {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
       end
     end
   end
