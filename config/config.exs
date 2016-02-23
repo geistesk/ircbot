@@ -1,16 +1,6 @@
 use Mix.Config
 
 config :ircbot,
-  # General IRC-Settings
-  ircHost: "alvarpi.hsmr.dn42",
-  ircPort: 9999,
-  ircSsl:  true,
-  ircNick: "hsmrBot",
-  ircPass: "topkeklel",
-  ircUser: "hsmrBot",
-  ircName: "Just another Bot :3",
-  ircChan: ["#hsmr"],
-
   helpMessage: [
     "Commands for hsmrBot:",
     "⇢ !ask FRAGE   Beantwortet die gegebene FRAGE wahrheitsgemäß",
@@ -33,6 +23,6 @@ config :ircbot,
   # MagicConchHandler
   magicConchAnswers: ["Heute", "Morgen", "So wird das nichts", "Versuch es nochmal",
                       "Das war super", "Ja", "Nein", "Vielleicht", "Mach mal 'ne Pause",
-                      "Frag Mutti", "Vergiß es", "Mach weiter"],
+                      "Frag Mutti", "Vergiß es", "Mach weiter"]
 
-  bellConfigFile: "bellconf.json"
+import_config "config.#{Mix.env}.exs"

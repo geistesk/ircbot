@@ -107,7 +107,9 @@ defmodule BellHandler do
     clients = ExIrc.Client.channel_users(client, channel)
               |> Enum.into(HashSet.new)
     bell_users = Enum.into(bell[channel], HashSet.new)
-    users = HashSet.intersection(clients, bell_users) |> HashSet.to_list
+    users = HashSet.intersection(clients, bell_users)
+            |> HashSet.to_list
+            |> Enum.sort
 
     person_txt = List.foldl(users, "", fn user, txt -> "#{txt} #{user}," end)
                  |> String.rstrip(?,)
