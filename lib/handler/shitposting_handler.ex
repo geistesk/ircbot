@@ -73,7 +73,21 @@ defmodule ShitpostingHandler do
       execution:
         fn _message, from, channel, client ->
           ExIrc.Client.msg(client, :privmsg, channel,
-            "Du musst Kaffee trinken, #{from}") end}
+            "Du musst Kaffee trinken, #{from}") end},
+     %Shitpost{
+      name: "Gibbe",
+      condition:
+        fn message, _from, _channel, _client ->
+          String.match?(message, ~r/(gi[b|v]+e?) (\w*)/) end,
+      execution:
+        fn message, from, channel, client ->
+          try do
+            [_, _, gib] = Regex.run(~r/(gi[b|v]+e?) (\w*)/, message)
+            ExIrc.Client.me(client, channel, "gibbe #{from} 1 #{gib}")
+          rescue
+            _ -> :kannmannichtsmachen
+          end
+        end}
     ]
 
     case Enum.filter(shitpostings,

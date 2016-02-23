@@ -11,7 +11,6 @@ concurrent. 'Nuff said.
 * Telegram-to-IRC-Gateway
  * Sticker --> ASCII
 * official Shitposting
- * gibbe mode
  * Ridiculous replies to random messages; the ride never ends :^)
 * Deployment-Script
  * different config for development and production™
