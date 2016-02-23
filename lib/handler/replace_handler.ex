@@ -27,11 +27,11 @@ defmodule ReplaceHandler do
       {:noreply, {client, last_msgs}}
     else
       if last_msg == nil do
-        Logger.info("[ReplaceHandler] #{from} wrote first message in #{channel}")
+        Logger.debug("[ReplaceHandler] #{from} wrote first message in #{channel}")
         chan_msgs = Dict.put(last_msgs[channel], from, message)
         {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
       else
-        Logger.info("[ReplaceHandler] #{from} wrote new message in #{channel}")
+        Logger.debug("[ReplaceHandler] #{from} wrote new message in #{channel}")
         chan_msgs = %{last_msgs[channel] | from => message}
         {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
       end
