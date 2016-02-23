@@ -11,6 +11,15 @@ config :ircbot,
   ircName: "Just another Bot :3",
   ircChan: ["#hsmr"],
 
+  helpMessage: [
+    "Commands for hsmrBot:",
+    "⇢ !ask FRAGE   Beantwortet die gegebene FRAGE wahrheitsgemäß",
+    "⇢ !base        Ist der Space gerade besetzt?",
+    "⇢ !bell help   Bell ist ein Modul zum Benachrichtigen von verschiedenen Usern",
+    "⇢ !flti        Gibt das Datum der nächsten FLTI*-Zeiten aus",
+    "⇢ s/FOO/BAR/   Ersetzt im letzten Post FOO durch BAR. RegEx sind teilweise möglich"
+    ],
+
   # FreifunkaGreetingHandler
   freifunkaHost: "2001:4dd0:fc15:cafe:208:54ff:fe55:1498",
   freifunkaName: ~r/is using a Web IRC client$/,
