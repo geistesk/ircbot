@@ -23,7 +23,15 @@ hackspace and have some fun. 'Nuff said.
 * `MIX_ENV=prod mix compile`
 * `MIX_ENV=mix run --ho-halt`
 
+## Life cycle
+The bot starts and tries to connect to the given server. Now it will serve the
+IRC-requests. When the connection is closed the bot will stop. If you want to
+get it up again, put the startup into an endless loop or let your init-system
+do it (systemd is a great choice (^:)
+
 ## TODO
+* Change license 'cause Germany
+* ReplaceHandler: check if last message matches regex
 * Handle disconnect
 * Inspect Unicode-Bug
 * Telegram-to-IRC-Gateway
@@ -32,7 +40,10 @@ hackspace and have some fun. 'Nuff said.
 * Weather
 * official Shitposting
  * Ridiculous replies to random messages; the ride never ends :^)
+ * Reduce amount of shit :    >
+ * RegEx for GNU/Linux and Coffee
 * Tsundere mode
+* Return title from HTML-Pages if HTTP{,S}-URIs are posted
 
 ## License
 Have a look at `UNLICENSE`.

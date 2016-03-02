@@ -36,6 +36,16 @@ defmodule ConnectionHandler do
     {:noreply, state}
   end
 
+  # Just stop the bot in case of a disconnection
+  # The init-System or a simple bash-loop should just bring it up after n secs
+  def handle_info(:disconnected, _state) do
+    Logger.warn("[ConnectionHandler] Disconnected from server!")
+    Logger.warn("[ConnectionHandler] Everything is lost ;_;")
+    Logger.warn("[ConnectionHandler] Shutting down ircbot")
+    System.halt(0)
+    {:noreply, nil}
+  end
+
   # Catch-all for messages you don't care about
   def handle_info(_msg, state) do
     # IO.inspect msg
