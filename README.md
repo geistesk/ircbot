@@ -37,10 +37,6 @@ do it (systemd is a great choice (^:)
  * Sticker --> ASCII
 * RMV-Checks for next bus [!buba]
 * Weather
-* official Shitposting
- * Ridiculous replies to random messages; the ride never ends :^)
- * Reduce amount of shit :    >
- * RegEx for GNU/Linux and Coffee
 * Tsundere mode
 * Return title from HTML-Pages if HTTP{,S}-URIs are posted
 
