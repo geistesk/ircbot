@@ -17,17 +17,12 @@ hackspace and have some fun. 'Nuff said.
 <@testBot> ⇢ s/FOO/BAR/      Resends your last message where FOO is replaced with BAR. RegEx is possible
 ```
 
-## Deployment
-* copy config/config.example.exs to config/config.prod.exs and
-   config/config.dev.exs and modify its values
-* `MIX_ENV=prod mix compile`
-* `MIX_ENV=mix run --ho-halt`
-
-## Life cycle
-The bot starts and tries to connect to the given server. Now it will serve the
-IRC-requests. When the connection is closed the bot will stop. If you want to
-get it up again, put the startup into an endless loop or let your init-system
-do it (systemd is a great choice (^:)
+## Deployment/Install
+* `$ cp config/config.{example,dev}.exs`
+  `$ cp config/config.{example,prod}.exs`
+* Modify these files…
+* `$ ./efl.sh [ENV]`
+ * where ENV could be "dev" or "prod" (default)
 
 ## TODO
 * Inspect Unicode-Bug
