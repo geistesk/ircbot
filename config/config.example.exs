@@ -11,7 +11,11 @@ config :ircbot,
   ircName: "Just another Bot :3",
   ircChan: ["#test"],
 
-  bellConfigFile: "bellconf.json"
+  bellConfigFile: "bellconf.json",
+
+  telegramToken: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+  telegramChannels: ["#test"],
+  telegramChatIds: [-10000000]
 
 config :logger,
   level: :info

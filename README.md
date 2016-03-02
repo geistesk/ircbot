@@ -20,13 +20,16 @@ hackspace and have some fun. 'Nuff said.
 ### Passive
 * Greeting everyone who connects through the FFMR-Webchat
 * Parsing URLs and trying to return the title of HTML-documents
+* Posting Telegram-messages into the IRC
 
 ## Deployment/Install
 * `$ cp config/config.{example,dev}.exs`
 * `$ cp config/config.{example,prod}.exs`
 * Modify these files…
+* `$ mix deps.get`
 * `$ ./efl.sh [ENV]`
  * where ENV could be "dev" or "prod" (default)
+ * maybe you want to fork it into the background or run it into screen or tmux
 
 ## Charset
 For some reasons this seems to be still a topic in 2016…
@@ -41,10 +44,10 @@ So I just tried a bit and reconfigured the bouncer. Maybe have a look in the
 ```
 
 ## TODO
-* Telegram-to-IRC-Gateway
 * RMV-Checks for next bus [!buba]
 * Weather
 * Improve UrlHandler
+ * refactor it
  * detect Twitter-Links and extract Tweet
 * Tsundere mode (*do I really want this?*)
 

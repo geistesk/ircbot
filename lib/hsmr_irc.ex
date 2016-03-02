@@ -27,6 +27,9 @@ defmodule HsmrIrc do
         BellHandler.json_to_map(Application.get_env(:ircbot, :bellConfigFile))])
     ]
 
+    spawn(TelegramPlugin, :init_cycle,
+      [Application.get_env(:ircbot, :telegramToken), client])
+
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: HsmrIrc.Supervisor]
