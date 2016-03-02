@@ -19,7 +19,7 @@ hackspace and have some fun. 'Nuff said.
 
 ## Deployment/Install
 * `$ cp config/config.{example,dev}.exs`
-  `$ cp config/config.{example,prod}.exs`
+* `$ cp config/config.{example,prod}.exs`
 * Modify these files…
 * `$ ./efl.sh [ENV]`
  * where ENV could be "dev" or "prod" (default)
