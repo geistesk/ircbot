@@ -31,7 +31,7 @@ defmodule ConnectionHandler do
      "You are currently disconnected from IRC. Use 'connect' to reconnect.",
      "*status"},
     state) do
-    Logger.warn("[ConnectionHandler] ZNC want's reconnection!")
+    Logger.warn("[ConnectionHandler] ZNC wants a reconnection!")
     ExIrc.Client.msg(state.client, :privmsg, "*status", "connect")
     {:noreply, state}
   end
