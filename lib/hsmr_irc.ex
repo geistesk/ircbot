@@ -13,6 +13,7 @@ defmodule HsmrIrc do
       worker(ConnectionHandler, [client]),
       worker(LoginHandler, [client, Application.get_env(:ircbot, :ircChan)]),
       worker(FreifunkaGreetingHandler, [client]),
+      worker(UrlHandler, [client]),
       #cmd !help
       worker(HelpHandler, [client]),
       # cmd: !ask

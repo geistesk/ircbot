@@ -19,6 +19,7 @@ hackspace and have some fun. 'Nuff said.
 ```
 ### Passive
 * Greeting everyone who connects through the FFMR-Webchat
+* Parsing URLs and trying to return the title of HTML-documents
 
 ## Deployment/Install
 * `$ cp config/config.{example,dev}.exs`
@@ -43,7 +44,8 @@ So I just tried a bit and reconfigured the bouncer. Maybe have a look in the
 * Telegram-to-IRC-Gateway
 * RMV-Checks for next bus [!buba]
 * Weather
-* Return title from HTML-Pages if HTTP{,S}-URIs are posted
+* Improve UrlHandler
+ * detect Twitter-Links and extract Tweet
 * Tsundere mode (*do I really want this?*)
 
 ## License
