@@ -30,8 +30,6 @@ get it up again, put the startup into an endless loop or let your init-system
 do it (systemd is a great choice (^:)
 
 ## TODO
-* ReplaceHandler: check if last message matches regex
-* Handle disconnect
 * Inspect Unicode-Bug
 * Telegram-to-IRC-Gateway
  * Sticker --> ASCII

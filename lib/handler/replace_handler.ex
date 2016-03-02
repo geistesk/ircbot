@@ -22,7 +22,6 @@ defmodule ReplaceHandler do
   def handle_info({:received, message, from, channel}, {client, last_msgs}) do
     last_msg = last_msgs[channel][from]
     if String.starts_with?(message, "s/") and last_msg != nil do
-      Logger.info("[ReplaceHandler] #{from} fired a RegEx in #{channel}")
       handle_regex(from, last_msg, message, channel, client)
       {:noreply, {client, last_msgs}}
     else
@@ -59,10 +58,13 @@ defmodule ReplaceHandler do
       old_regex = Regex.compile!(old)
       Logger.debug("[ReplaceHandler] Replace-pattern are #{old}")
 
-      new_message = String.replace(last_message, old_regex, new)
-      ExIrc.Client.msg(client, :privmsg, channel, "#{from}: #{new_message}")
+      if Regex.match?(old_regex, last_message) do
+        Logger.debug("[ReplaceHandler] Last message fits to RegEx")
+        new_message = String.replace(last_message, old_regex, new)
+        ExIrc.Client.msg(client, :privmsg, channel, "#{from}: #{new_message}")
+      end
     rescue
-      _ -> Logger.warn("[ReplaceHandler] RegEx for #{from} failed")
+      _ -> Logger.debug("[ReplaceHandler] RegEx for #{from} failed")
     end
   end
 end
