@@ -8,6 +8,7 @@ concurrent. It was written to get into Elixir, support the IRC-channel of our
 hackspace and have some fun. 'Nuff said.
 
 ## Functionality
+### Active
 ```
 !help↲
 <@testBot> ⇢ !ask QUESTION   Gives a random answer to the given QUESTION
@@ -16,6 +17,8 @@ hackspace and have some fun. 'Nuff said.
 <@testBot> ⇢ !flti           Returns the date of the next FLTI*-times in our hackspace
 <@testBot> ⇢ s/FOO/BAR/      Resends your last message where FOO is replaced with BAR. RegEx is possible
 ```
+### Passive
+* Greeting everyone who connects through the FFMR-Webchat
 
 ## Deployment/Install
 * `$ cp config/config.{example,dev}.exs`
@@ -37,13 +40,11 @@ So I just tried a bit and reconfigured the bouncer. Maybe have a look in the
 ```
 
 ## TODO
-* Inspect Unicode-Bug
 * Telegram-to-IRC-Gateway
- * Sticker --> ASCII
 * RMV-Checks for next bus [!buba]
 * Weather
-* Tsundere mode
 * Return title from HTML-Pages if HTTP{,S}-URIs are posted
+* Tsundere mode (*do I really want this?*)
 
 ## License
 This software is released under the zlib-License. For further informations have
