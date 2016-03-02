@@ -30,7 +30,6 @@ get it up again, put the startup into an endless loop or let your init-system
 do it (systemd is a great choice (^:)
 
 ## TODO
-* Change license 'cause Germany
 * ReplaceHandler: check if last message matches regex
 * Handle disconnect
 * Inspect Unicode-Bug
@@ -46,4 +45,5 @@ do it (systemd is a great choice (^:)
 * Return title from HTML-Pages if HTTP{,S}-URIs are posted
 
 ## License
-Have a look at `UNLICENSE`.
+This software is released under the zlib-License. For further informations have
+a look at `LICENSE`.
