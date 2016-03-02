@@ -12,3 +12,6 @@ config :ircbot,
   ircChan: ["#test"],
 
   bellConfigFile: "bellconf.json"
+
+config :logger,
+  level: :info
