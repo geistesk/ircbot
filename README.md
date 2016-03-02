@@ -24,6 +24,18 @@ hackspace and have some fun. 'Nuff said.
 * `$ ./efl.sh [ENV]`
  * where ENV could be "dev" or "prod" (default)
 
+## Charset
+For some reasons this seems to be still a topic in 2016…
+I discovered some strange behaviors with everything which is not ANSI. It seems
+like the bot parsed it - for some reasons - as ISO-8859-n. However, I am using
+a ZNC-Bouncer between the bot and the server.
+So I just tried a bit and reconfigured the bouncer. Maybe have a look in the
+[ZNC-wiki](http://wiki.znc.in/Charset).
+```
+/msg *controlpanel Set ClientEncoding BOTNAME ^ISO-8859-15
+/msg *controlpanel SetNetwork Encoding BOTNAME NETWORK ^UTF-8
+```
+
 ## TODO
 * Inspect Unicode-Bug
 * Telegram-to-IRC-Gateway
