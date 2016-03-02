@@ -3,6 +3,7 @@
 /deps
 erl_crash.dump
 *.ez
+mix.lock
 bellconf.json
 /config/config.prod.exs
 /config/config.dev.exs
