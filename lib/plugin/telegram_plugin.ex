@@ -49,7 +49,7 @@ defmodule TelegramPlugin do
       {:ok, msgs} ->
         Logger.info("[TelegramPlugin] Got some updates! Posting them now..")
         Enum.each(msgs,
-          fn %{"message" => message} -> send_message(client_pid, message) end)
+          fn %{"message" => message} -> send_message(token, client_pid, message) end)
         last_message = List.last(msgs)
         cycle(token, last_message["update_id"] + 1, client_pid)
       _ ->
@@ -58,7 +58,39 @@ defmodule TelegramPlugin do
     end
   end
 
-  defp send_message(client_pid, message) do
+  def getFile(token, file_id) do
+    %HTTPoison.Response{status_code: 200, body: body} = HTTPoison.get!(
+      "https://api.telegram.org/bot#{token}/getFile?file_id=#{file_id}")
+    %{"ok" => true, "result" => %{"file_path" => path}} = JSON.decode!(body)
+    "https://api.telegram.org/file/bot#{token}/#{path}"
+  end
+
+  def fetch_file(telegram_url) do
+    %HTTPoison.Response{status_code: 200, body: resp} = HTTPoison.get!(telegram_url)
+    {:ok, file, file_name} = Temp.open
+    IO.binwrite(file, resp)
+    File.close(file)
+    {file_name, "tlgrm" <> Path.extname(telegram_url)}
+  end
+
+  # for stickers only
+  def dwebp_invoke({file_name, "tlgrm.webp"}) do
+    jpg_file = Temp.path!(%{suffix: ".jpg"})
+    System.cmd("dwebp", [file_name, "-o", jpg_file], stderr_to_stdout: true)
+    File.rm!(file_name)
+    {jpg_file, "tlgrm.jpg"}
+  end
+
+  def upload_uguu({file_name, upld_file_name}) do
+    post_resp = HTTPoison.post!("https://uguu.se/api.php?d=upload-tool",
+      {:multipart, [{"name", upld_file_name}, {:file, file_name}]})
+    %HTTPoison.Response{status_code: 200, body: uguu_url} = post_resp
+
+    File.rm!(file_name)
+    uguu_url
+  end
+
+  defp send_message(token, client_pid, message) do
     try do
       chat = message["chat"]
       from = message["from"]
@@ -76,7 +108,20 @@ defmodule TelegramPlugin do
 
       irc_messages = cond do
         message["sticker"] != nil ->
-          ["#{sender} sent a smug sticker…"]
+          %{"file_id" => file_id} = message["sticker"]
+          url = getFile(token, file_id) |> fetch_file |> dwebp_invoke |> upload_uguu
+          ["#{sender} sent a sticker: #{url}"]
+
+        message["photo"] != nil ->
+          file_id = Enum.max_by(message["photo"], fn %{"file_size" => x} -> x end)
+                    |> Map.fetch!("file_id")
+          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          ["#{sender} sent a picture: #{url}"]
+
+        message["document"] != nil ->
+          %{"file_id" => file_id} = message["document"]
+          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          ["#{sender} sent a file: #{url}"]
 
         message["text"] != nil ->
           [txt_head | txt_lines] = String.split(message["text"], "\n", trim: true)
@@ -87,6 +132,9 @@ defmodule TelegramPlugin do
             <<3>> <> "3" <> line <> <<15>>
           end)
           [res_head | res_lines]
+
+        true ->
+          raise "Won't handle unsupported message type"
       end
 
       if !(chat["id"] in Application.get_env(:ircbot, :telegramChatIds)), do:
@@ -99,7 +147,8 @@ defmodule TelegramPlugin do
                               <<2>> <> "[Telegram] " <> <<15>> <> &1))
         end)
     rescue
-      e -> Logger.warn("[TelegramPlugin] Exception while posting: #{e.message}")
+      e in RuntimeError -> Logger.warn("[TelegramPlugin] #{e.message}")
+      _ -> Logger.warn("[TelegramPlugin] Something went wrong :>")
     end
   end
 end

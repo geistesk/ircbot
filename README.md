@@ -20,9 +20,12 @@ hackspace and have some fun. 'Nuff said.
 ### Passive
 * Greeting everyone who connects through the FFMR-Webchat
 * Parsing URLs and trying to return the title of HTML-documents
-* Posting Telegram-messages into the IRC
+* Posting Telegram-messages, images, files and stickers into the IRC
 
 ## Deployment/Install
+You need to have a installed binary of `dwebp` (`libwebp`-package on Arch) to
+convert the Telegram-stickers to jpgs.
+
 * `$ cp config/config.{example,dev}.exs`
 * `$ cp config/config.{example,prod}.exs`
 * Modify these files…

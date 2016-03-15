@@ -18,9 +18,10 @@ defmodule Ircbot.Mixfile do
   end
 
   defp deps do
-    [{:exirc, "~> 0.9.2"},
+    [{:exirc, "~> 0.10.0"},
      {:spaceapi, "~> 0.1.2"},
      {:httpoison, "~> 0.8.0"},
-     {:json, "~> 0.3.0"}]
+     {:json, "~> 0.3.0"},
+     {:temp, "~> 0.4"}]
   end
 end
