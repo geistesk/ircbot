@@ -26,7 +26,7 @@ defmodule UrlHandler do
           if String.contains?(val, "text/html") do
             [_, title] = Regex.run(~r/<title[ \S]*>(.+)<\/title>/im, resp.body)
             ExIrc.Client.msg(
-              client, :notice, channel, "Title: " <> <<2>> <> title)
+              client, :notice, channel, "[URL-Title] " <> <<2>> <> title)
           end
         nil -> nil
         _   -> nil
