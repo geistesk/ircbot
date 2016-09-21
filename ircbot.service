@@ -1,0 +1,12 @@
+[Unit]
+Description=Just another stupid IRC-Bot
+#After=znc.service
+
+[Service]
+ExecStart=/bin/sh /path/to/run.sh
+#User=ircbot
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
