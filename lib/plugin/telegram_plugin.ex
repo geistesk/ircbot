@@ -47,9 +47,12 @@ defmodule TelegramPlugin do
         Logger.debug("[TelegramPlugin] Got an empty update..")
         cycle(token, since, client_pid)
       {:ok, msgs} ->
-        Logger.info("[TelegramPlugin] Got some updates! Posting them now..")
-        Enum.each(msgs,
-          fn %{"message" => message} -> send_message(token, client_pid, message) end)
+        Logger.info("[TelegramPlugin] Got some possible updates! Processing…")
+        # only care about "messages" atm
+        Enum.filter(msgs, fn x -> x["message"] != nil end)
+        |> Enum.each(
+            fn %{"message" => message} ->
+              send_message(token, client_pid, message) end)
         last_message = List.last(msgs)
         cycle(token, last_message["update_id"] + 1, client_pid)
       _ ->
@@ -90,6 +93,18 @@ defmodule TelegramPlugin do
     uguu_url
   end
 
+  # converts a list of words into a list of multiple words
+  # this function is used to split long sentences into multiple lines
+  defp make_text_line([], data), do: data
+  defp make_text_line([ih | it], []), do: make_text_line(it, [ih])
+  defp make_text_line([ih | it], [dh | dt]) do
+    if String.length(dh <> " " <> ih) <= 80 do
+      make_text_line(it, [dh <> " " <> ih | dt])
+    else
+      make_text_line(it, [ih, dh | dt])
+    end
+  end
+
   defp send_message(token, client_pid, message) do
     try do
       chat = message["chat"]
@@ -124,14 +139,15 @@ defmodule TelegramPlugin do
           ["#{sender} sent a file: #{url}"]
 
         message["text"] != nil ->
-          [txt_head | txt_lines] = String.split(message["text"], "\n", trim: true)
-
-          res_head  = sender <> ": " <> <<3>> <> "3" <> txt_head <> <<15>>
+          txt_lines =
+            String.split(message["text"], "\n", trim: true)
+            |> Enum.reduce([], fn line, list ->
+              line_list = String.split(line, ~r{\s}, trim: true) |> make_text_line([]) |> Enum.reverse
+              list ++ line_list end)
           res_lines = Enum.map(txt_lines, fn line ->
-            String.duplicate(" ", String.length(sender) + 2) <>
-            <<3>> <> "3" <> line <> <<15>>
+            "<" <> sender <> ">" <> <<3>> <> "3" <> " " <> line <> <<15>>
           end)
-          [res_head | res_lines]
+          res_lines
 
         true ->
           raise "Won't handle unsupported message type"
@@ -144,7 +160,7 @@ defmodule TelegramPlugin do
         fn channel ->
           Enum.each(irc_messages,
             &ExIrc.Client.msg(client_pid, :notice, channel,
-                              <<2>> <> "[Telegram] " <> <<15>> <> &1))
+                              <<2>> <> "TLGRM| " <> <<15>> <> &1))
         end)
     rescue
       e in RuntimeError -> Logger.warn("[TelegramPlugin] #{e.message}")
