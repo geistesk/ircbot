@@ -1,4 +1,4 @@
-#!/bin/shb
+#!/bin/sh
 # Usage: ./run.sh [ENV]
 # where ENV could be "dev" or "prod" (default)
 
