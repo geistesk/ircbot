@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule BellHandler do
   @moduledoc """
   A simple handler to notify some pre-registered users
@@ -56,7 +58,7 @@ defmodule BellHandler do
   end
 
   # process a /add/-request
-  def handle_info({:received, "!bell add", from, channel}, {client, bell}) do
+  def handle_info({:received, "!bell add", %SenderInfo{nick: from}, channel}, {client, bell}) do
     if from in bell[channel] do
       Logger.info("[BellHandler] #{from} is already registered for #{channel}")
       {:noreply, {client, bell}}
@@ -69,14 +71,14 @@ defmodule BellHandler do
   end
 
   # process a /rem/-request
-  def handle_info({:received, "!bell rem", from, channel}, {client, bell}) do
+  def handle_info({:received, "!bell rem", %SenderInfo{nick: from}, channel}, {client, bell}) do
     Logger.info("[BellHandler] #{from} was removed for #{channel}")
     new_bell = %{bell | channel => List.delete(bell[channel], from)}
     export_config(new_bell, Application.get_env(:ircbot, :bellConfigFile))
     {:noreply, {client, new_bell}}
   end
 
-  def handle_info({:received, "!bell check", from, channel}, {client, bell}) do
+  def handle_info({:received, "!bell check", %SenderInfo{nick: from}, channel}, {client, bell}) do
     Logger.info("[BellHandler] #{from} checkd own status")
     ExIrc.Client.msg(client, :privmsg, channel,
       "#{from}: Du bist " <>
@@ -100,7 +102,7 @@ defmodule BellHandler do
   end
 
   # fire the bell
-  def handle_info({:received, "!bell", from, channel}, {client, bell}) do
+  def handle_info({:received, "!bell", %SenderInfo{nick: from}, channel}, {client, bell}) do
     Logger.info("[BellHandler] #{from} rang the bell in #{channel}")
 
     # Intersect the current users with registred users and only alert those

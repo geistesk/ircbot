@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule DoorHandler do
   @moduledoc """
   This is an event handler which does door-things™
@@ -15,7 +17,7 @@ defmodule DoorHandler do
     {:ok, client}
   end
 
-  def handle_info({:received, "!flti", from, channel}, client) do
+  def handle_info({:received, "!flti", %SenderInfo{nick: from}, channel}, client) do
     Logger.info("[DoorHandler] #{from} asked for FLTI* in #{channel}")
 
     {_, week}   = :calendar.iso_week_number
@@ -35,10 +37,7 @@ defmodule DoorHandler do
     {:noreply, client}
   end
 
-  def handle_info({:received, "!door", from, channel}, client), do:
-    handle_info({:received, "!base", from, channel}, client)
-
-  def handle_info({:received, "!base", from, channel}, client) do
+  def handle_info({:received, "!base", %SenderInfo{nick: from}, channel}, client) do
     Logger.info("[DoorHandler] #{from} asked for basestate in #{channel}")
 
     case HTTPoison.get(Application.get_env(:ircbot, :doorSpaceApi)) do

@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule UrlHandler do
   @moduledoc """
   This is an event handler which checks messages for URLs and tries to get
@@ -14,7 +16,7 @@ defmodule UrlHandler do
     {:ok, client}
   end
 
-  def handle_info({:received, message, from, channel}, client) do
+  def handle_info({:received, message, %SenderInfo{nick: from}, channel}, client) do
     try do
       case Regex.run(~r/(http[s]?:\/\/\S+)/, message) do
         [url, url] ->

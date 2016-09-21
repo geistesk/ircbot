@@ -4,7 +4,7 @@ defmodule Ircbot.Mixfile do
   def project do
     [app: :ircbot,
      version: "0.0.1",
-     elixir: "~> 1.2",
+     elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -18,10 +18,10 @@ defmodule Ircbot.Mixfile do
   end
 
   defp deps do
-    [{:exirc, "~> 0.10.0"},
+    [{:exirc, "~> 0.11.0"},
      {:spaceapi, "~> 0.1.2"},
-     {:httpoison, "~> 0.8.0"},
-     {:json, "~> 0.3.0"},
-     {:temp, "~> 0.4"}]
+     {:httpoison, "~> 0.9.1"},
+     {:json, "~> 1.0.0"},
+     {:temp, "~> 0.4.1"}]
   end
 end

@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule HelpHandler do
   @moduledoc """
   This is an magic conch/random answere event handler for ranom advises
@@ -13,7 +15,7 @@ defmodule HelpHandler do
     {:ok, client}
   end
 
-  def handle_info({:received, "!help", from, channel}, client) do
+  def handle_info({:received, "!help", %SenderInfo{nick: from}, channel}, client) do
     Logger.info("[HelpHandler] #{from} queried help in #{channel}")
     Application.get_env(:ircbot, :helpMessage)
     |> Enum.each(&ExIrc.Client.msg(client, :privmsg, channel, &1))

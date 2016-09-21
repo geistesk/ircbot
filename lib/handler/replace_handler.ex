@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule ReplaceHandler do
   @moduledoc """
   Minimal regex replacement parser for messages like s/FOO/BAR/
@@ -19,7 +21,7 @@ defmodule ReplaceHandler do
     {:noreply, {client, new_last_msgs}}
   end
 
-  def handle_info({:received, message, from, channel}, {client, last_msgs}) do
+  def handle_info({:received, message, %SenderInfo{nick: from}, channel}, {client, last_msgs}) do
     last_msg = last_msgs[channel][from]
     if String.starts_with?(message, "s/") and last_msg != nil do
       handle_regex(from, last_msg, message, channel, client)

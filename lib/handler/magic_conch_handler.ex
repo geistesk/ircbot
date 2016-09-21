@@ -1,5 +1,7 @@
 require Logger
 
+alias ExIrc.SenderInfo
+
 defmodule MagicConchHandler do
   @moduledoc """
   This is an magic conch/random answere event handler for ranom advises
@@ -13,7 +15,7 @@ defmodule MagicConchHandler do
     {:ok, client}
   end
 
-  def handle_info({:received, message, from, channel}, client) do
+  def handle_info({:received, message, %SenderInfo{nick: from}, channel}, client) do
     if String.match?(message, ~r/^!ask.*/) do
       Logger.info("[MagicConchHandler] #{from} queried the magic conch in #{channel}")
       response = Application.get_env(:ircbot, :magicConchAnswers) |> Enum.random
