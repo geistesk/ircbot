@@ -20,7 +20,13 @@ defmodule FreifunkaGreetingHandler do
     # Check if a new joining user seems to use the webchat
     ff_host = Application.get_env(:ircbot, :freifunkaHost)
     ff_user = Application.get_env(:ircbot, :freifunkaUser)
+    ff_ignr = Application.get_env(:ircbot, :freifunkaNameIgnore)
     cond do
+      Regex.match?(ff_ignr, nick) ->
+        Logger.info(
+          "[FreifunkaGreetingHandler] #{nick} matches ignore-RegEx and won't be greeted.")
+        {:noreply, client}
+
       ff_host == host and ff_user == user ->
         Logger.info(
           "[FreifunkaGreetingHandler] #{nick} joined from the webchat.")
