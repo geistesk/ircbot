@@ -133,6 +133,11 @@ defmodule TelegramPlugin do
           url = getFile(token, file_id) |> fetch_file |> upload_uguu
           ["#{sender} sent a picture: #{url}"]
 
+        message["video"] != nil ->
+          %{"file_id" => file_id} = message["video"]
+          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          ["#{sender} sent a video: #{url}"]
+
         message["document"] != nil ->
           %{"file_id" => file_id} = message["document"]
           url = getFile(token, file_id) |> fetch_file |> upload_uguu
