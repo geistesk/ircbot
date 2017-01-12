@@ -11,7 +11,7 @@ defmodule BellHandler do
   end
 
   def init([client, bell]) do
-    ExIrc.Client.add_handler client, self
+    ExIrc.Client.add_handler client, self()
     {:ok, {client, bell}}
   end
 
@@ -51,7 +51,7 @@ defmodule BellHandler do
       {:noreply, {client, bell}}
     else
       Logger.info("[BellHandler] Adding #{channel} to state")
-      new_bell = Dict.put(bell, channel, [])
+      new_bell = Map.put(bell, channel, [])
       export_config(new_bell, Application.get_env(:ircbot, :bellConfigFile))
       {:noreply, {client, new_bell}}
     end
@@ -107,10 +107,10 @@ defmodule BellHandler do
 
     # Intersect the current users with registred users and only alert those
     clients = ExIrc.Client.channel_users(client, channel)
-              |> Enum.into(HashSet.new)
-    bell_users = Enum.into(bell[channel], HashSet.new)
-    users = HashSet.intersection(clients, bell_users)
-            |> HashSet.to_list
+              |> Enum.into(MapSet.new)
+    bell_users = Enum.into(bell[channel], MapSet.new)
+    users = MapSet.intersection(clients, bell_users)
+            |> MapSet.to_list
             |> Enum.sort
 
     person_txt = List.foldl(users, "", fn user, txt -> "#{txt} #{user}," end)

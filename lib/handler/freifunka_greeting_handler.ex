@@ -12,7 +12,7 @@ defmodule FreifunkaGreetingHandler do
   end
 
   def init([client]) do
-    ExIrc.Client.add_handler client, self
+    ExIrc.Client.add_handler client, self()
     {:ok, client}
   end
 

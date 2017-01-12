@@ -11,13 +11,13 @@ defmodule ReplaceHandler do
   end
 
   def init([client, last_msgs]) do
-    ExIrc.Client.add_handler client, self
+    ExIrc.Client.add_handler client, self()
     {:ok, {client, last_msgs}}
   end
 
   def handle_info({:joined, channel}, {client, last_msgs}) do
     Logger.info("[ReplaceHandler] Joined #{channel} and init state")
-    new_last_msgs = Dict.put(last_msgs, channel, %{})
+    new_last_msgs = Map.put(last_msgs, channel, %{})
     {:noreply, {client, new_last_msgs}}
   end
 
@@ -32,12 +32,12 @@ defmodule ReplaceHandler do
           # strange case which should not occur… but occured just on the Pi
           Logger.warn("[ReplaceHandler] #{channel} wasn't init yet!")
           Logger.warn("[ReplaceHandler] Init #{channel} and added #{from}s message")
-          new_last_msgs = Dict.put(last_msgs, channel, %{from => message})
+          new_last_msgs = Map.put(last_msgs, channel, %{from => message})
           {:noreply, {client, new_last_msgs}}
 
         last_msg == nil ->
           Logger.debug("[ReplaceHandler] #{from} wrote first message in #{channel}")
-          chan_msgs = Dict.put(last_msgs[channel], from, message)
+          chan_msgs = Map.put(last_msgs[channel], from, message)
           {:noreply, {client, %{last_msgs | channel => chan_msgs}}}
 
         true ->

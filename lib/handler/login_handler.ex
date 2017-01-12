@@ -13,7 +13,7 @@ defmodule LoginHandler do
   end
 
   def init([client, channels]) do
-    ExIrc.Client.add_handler client, self
+    ExIrc.Client.add_handler client, self()
     {:ok, {client, channels}}
   end
 

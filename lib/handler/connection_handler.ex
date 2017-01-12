@@ -10,7 +10,7 @@ defmodule ConnectionHandler do
   end
 
   def init_connection(state) do
-    ExIrc.Client.add_handler state.client, self
+    ExIrc.Client.add_handler state.client, self()
     if state.ssl do
       ExIrc.Client.connect_ssl! state.client, state.host, state.port
     else
