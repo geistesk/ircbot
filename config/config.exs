@@ -26,6 +26,7 @@ config :ircbot,
   # MagicConchHandler
   magicConchAnswers: ["Heute", "Morgen", "So wird das nichts", "Versuch es nochmal",
                       "Das war super", "Ja", "Nein", "Vielleicht", "Mach mal 'ne Pause",
-                      "Frag Mutti", "Vergiß es", "Mach weiter"]
+                      "Frag Mutti", "Vergiß es", "Mach weiter"],
 
+  telegramPomf: "https://lewd.se"
 import_config "config.#{Mix.env}.exs"

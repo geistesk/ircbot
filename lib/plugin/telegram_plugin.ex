@@ -84,13 +84,14 @@ defmodule TelegramPlugin do
     {jpg_file, "tlgrm.jpg"}
   end
 
-  def upload_uguu({file_name, upld_file_name}) do
-    post_resp = HTTPoison.post!("https://uguu.se/api.php?d=upload-tool",
+  def upload_pomf({file_name, upld_file_name}) do
+    pomf_host = Application.get_env(:ircbot, :telegramPomf)
+    post_resp = HTTPoison.post!("#{pomf_host}/api.php?d=upload-tool",
       {:multipart, [{"name", upld_file_name}, {:file, file_name}]})
-    %HTTPoison.Response{status_code: 200, body: uguu_url} = post_resp
+    %HTTPoison.Response{status_code: 200, body: pomf_url} = post_resp
 
     File.rm!(file_name)
-    uguu_url
+    pomf_url
   end
 
   # converts a list of words into a list of multiple words
@@ -124,23 +125,23 @@ defmodule TelegramPlugin do
       irc_messages = cond do
         message["sticker"] != nil ->
           %{"file_id" => file_id} = message["sticker"]
-          url = getFile(token, file_id) |> fetch_file |> dwebp_invoke |> upload_uguu
+          url = getFile(token, file_id) |> fetch_file |> dwebp_invoke |> upload_pomf
           ["#{sender} sent a sticker: #{url}"]
 
         message["photo"] != nil ->
           file_id = Enum.max_by(message["photo"], fn %{"file_size" => x} -> x end)
                     |> Map.fetch!("file_id")
-          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          url = getFile(token, file_id) |> fetch_file |> upload_pomf
           ["#{sender} sent a picture: #{url}"]
 
         message["video"] != nil ->
           %{"file_id" => file_id} = message["video"]
-          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          url = getFile(token, file_id) |> fetch_file |> upload_pomf
           ["#{sender} sent a video: #{url}"]
 
         message["document"] != nil ->
           %{"file_id" => file_id} = message["document"]
-          url = getFile(token, file_id) |> fetch_file |> upload_uguu
+          url = getFile(token, file_id) |> fetch_file |> upload_pomf
           ["#{sender} sent a file: #{url}"]
 
         message["text"] != nil ->
