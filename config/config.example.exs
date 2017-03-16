@@ -13,9 +13,13 @@ config :ircbot,
 
   bellConfigFile: "bellconf.json",
 
-  telegramToken: "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+  telegramToken:    "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
   telegramChannels: ["#test"],
-  telegramChatIds: [-10000000]
+  telegramChatIds:  [-10000000],
+
+  grafanaRouterUrl:      "/web-hook/",
+  grafanaRouterPort:     4001,
+  grafanaRouterChannels: ["#test"]
 
 config :logger,
   level: :info

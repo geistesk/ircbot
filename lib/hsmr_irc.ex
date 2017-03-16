@@ -24,7 +24,11 @@ defmodule HsmrIrc do
       worker(ReplaceHandler, [client, %{}]),
       # !bell {,add,rem,help}
       worker(BellHandler, [client,
-        BellHandler.json_to_map(Application.get_env(:ircbot, :bellConfigFile))])
+        BellHandler.json_to_map(Application.get_env(:ircbot, :bellConfigFile))]),
+      # Grafana webbhooks
+      Plug.Adapters.Cowboy.child_spec(:http, GrafanaRouter, client,
+        [ip:   {127, 0, 0, 1},
+         port: Application.get_env(:ircbot, :grafanaRouterPort, 4001)])
     ]
 
     spawn(TelegramPlugin, :init_cycle,

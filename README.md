@@ -21,6 +21,7 @@ hackspace and have some fun. 'Nuff said.
 * Greeting everyone who connects through the FFMR-Webchat
 * Parsing URLs and trying to return the title of HTML-documents
 * Posting Telegram-messages, images, files and stickers into the IRC
+* Starting a HTTP-Server to receive RESTfull-JSONs
 
 ## Deployment/Install
 You need to have a installed binary of `dwebp` (`libwebp`-package on Arch) to

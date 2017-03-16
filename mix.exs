@@ -13,7 +13,8 @@ defmodule Ircbot.Mixfile do
   def application do
     [
       mod: {HsmrIrc, []},
-      applications: [:exirc, :httpoison, :spaceapi, :poison, :json, :logger]
+      applications: [
+        :exirc, :httpoison, :spaceapi, :poison, :json, :logger, :cowboy, :plug]
     ]
   end
 
@@ -22,6 +23,8 @@ defmodule Ircbot.Mixfile do
      {:spaceapi, "~> 0.1.2"},
      {:httpoison, "~> 0.9.1"},
      {:json, "~> 1.0.0"},
-     {:temp, "~> 0.4.1"}]
+     {:temp, "~> 0.4.1"},
+     {:cowboy, "~> 1.1.2"},
+     {:plug, "~> 1.3.3"}]
   end
 end
