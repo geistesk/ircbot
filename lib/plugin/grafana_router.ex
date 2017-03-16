@@ -7,24 +7,19 @@ defmodule GrafanaRouter do
   def init(opts), do: opts
 
   def call(conn, opts) do
-    {code, msg} = {conn, opts}
+    conn_json = put_resp_content_type(conn, "application/json", "utf-8")
+
+    {http_code, resp_msg, msg} = {conn_json, opts}
       |> filter_request
       |> filter_authorization
       |> extract_body
       |> body_parse_json
       |> json_to_messages
       |> post_in_irc
+      |> prepare_message
 
-    conn = put_resp_content_type(conn, "application/json", "utf-8")
-
-    case code do
-      :ok ->
-        Logger.info("[GrafanaRouter] " <> msg)
-        send_resp(conn, 200, "{ \"state\": \"(ﾟヮﾟ)\" }")
-      :error ->
-        Logger.warn("[GrafanaRouter] " <> msg)
-        send_resp(conn, 500, "{ \"state\": \"o(╥﹏╥)o\" }")
-    end
+    Logger.info("[GrafanaRouter] " <> msg)
+    send_resp(conn_json, http_code, "{ \"state\": \"#{resp_msg}\" }")
   end
 
   # {conn, opts} -> {:ok, {conn, opts}} | {:error, msg}
@@ -104,10 +99,9 @@ defmodule GrafanaRouter do
     
     # Only show the message if the state is alerting
     irc_msgs = if String.downcase(state) == "alerting" do
-      ["[Grafana] " <> title <> " [State: " <> state <> "]",
-       "[Grafana] " <> message]
+      ["[Grafana] " <> title, "[Grafana] >" <> message]
     else
-      ["[Grafana] " <> title <> " [State: " <> state <> "]"]
+      ["[Grafana] " <> title]
     end
 
     {:ok, {irc_msgs, opts}}
@@ -127,4 +121,14 @@ defmodule GrafanaRouter do
       _ -> {:error, "Failed to send message to the IRC"}
     end
   end
+
+  # {code, msg} -> {http-code, resp-msg, msg}
+  defp prepare_message({code, msg}) do
+    case code do
+      :ok    -> { 200, "(ﾟヮﾟ)",   msg }
+      :error -> { 500, "o(╥﹏╥)o", msg }
+      _      -> { 502, "o(≧o≦)o",  msg }
+    end
+  end
+
 end
