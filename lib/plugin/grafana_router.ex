@@ -9,6 +9,7 @@ defmodule GrafanaRouter do
   def call(conn, opts) do
     {code, msg} = {conn, opts}
       |> filter_request
+      |> filter_authorization
       |> extract_body
       |> body_parse_json
       |> json_to_messages
@@ -36,6 +37,26 @@ defmodule GrafanaRouter do
       {:ok, {conn, opts}}
     else
       {:error, "Wrong HTTP-method or wrong request-path"}
+    end
+  end
+
+  # {:ok, {conn, opts}} -> {:ok, {conn, opts}} | {:error, msg}
+  # {:error, msg}       -> {:error, msg}
+  defp filter_authorization({:error, msg}), do: {:error, msg}
+  defp filter_authorization({:ok, {conn, opts}}) do
+    auth_headers = Enum.filter(conn.req_headers,
+      fn({k, _}) -> k == "authorization" end)
+
+    key = Application.get_env(:ircbot, :grafanaRouterAuth, "") |> Base.encode64
+
+    case auth_headers do
+      [{"authorization", pass}] ->
+        if pass == "Basic " <> key do
+          {:ok, {conn, opts}}
+        else
+          {:error, "Password in authorization-header is wrong"}
+        end
+      _ -> {:error, "No authorization-header was found"}
     end
   end
 
@@ -81,8 +102,13 @@ defmodule GrafanaRouter do
     message = json_data["message"]
     state   = json_data["state"]
     
-    irc_msgs = ["[Grafana] " <> title <> " [State: " <> state <> "]",
-                "[Grafana] " <> message]
+    # Only show the message if the state is alerting
+    irc_msgs = if String.downcase(state) == "alerting" do
+      ["[Grafana] " <> title <> " [State: " <> state <> "]",
+       "[Grafana] " <> message]
+    else
+      ["[Grafana] " <> title <> " [State: " <> state <> "]"]
+    end
 
     {:ok, {irc_msgs, opts}}
   end

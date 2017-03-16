@@ -19,6 +19,7 @@ config :ircbot,
 
   grafanaRouterUrl:      "/web-hook/",
   grafanaRouterPort:     4001,
+  grafanaRouterAuth:     "username:password",
   grafanaRouterChannels: ["#test"]
 
 config :logger,
