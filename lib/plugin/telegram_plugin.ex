@@ -160,7 +160,7 @@ defmodule TelegramPlugin do
       end
 
       if !(chat["id"] in Application.get_env(:ircbot, :telegramChatIds)), do:
-        raise "Message from not allowed chat-id"
+        raise "Message from not allowed chat-id #{Integer.to_string(chat["id"])}"
 
       Enum.each(Application.get_env(:ircbot, :telegramChannels),
         fn channel ->
